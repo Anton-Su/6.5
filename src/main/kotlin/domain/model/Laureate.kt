@@ -1,4 +1,4 @@
-package com.example.domain
+package domain.model
 
 import kotlinx.serialization.Serializable
 
@@ -13,11 +13,3 @@ data class Laureate(
     val birthPlace: String? = null,
     val portraitUrl: String? = null
 )
-
-@Serializable
-data class NobelPrize(
-    val year: String,
-    val category: String,
-    val laureates: List<Laureate> = emptyList()
-)
-

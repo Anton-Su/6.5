@@ -1,7 +1,7 @@
-package com.example
+package Routing
 
-import com.example.api.authRoutes
-import com.example.api.prizeRoutes
+
+import di.AppContainer
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,10 +13,13 @@ fun Application.configureRouting() {
         }
 
 
-        // public auth route
-        authRoutes()
 
-        // protected prize routes (uses JWT auth plugin)
-        prizeRoutes()
+
+//        // public auth route
+//        authRoutes()
+//
+//        // protected prize routes (uses JWT auth plugin)
+    // prizeRoutes()
     }
+    AppContainer.authController.configure(this)
 }
