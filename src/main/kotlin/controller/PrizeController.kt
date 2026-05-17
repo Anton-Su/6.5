@@ -36,18 +36,18 @@ class PrizeController(
 ) {
     fun configure(application: Application) {
         application.routing {
-            authenticate("auth-jwt") {
-                get("/prizes") {
-                    val prizes = getPrizeUseCase.invoke().filterNotNull()
-                    if (prizes.isEmpty()) {
-                        call.respond(
-                            HttpStatusCode.NotFound,
-                            mapOf("error" to "Премии не найдены")
-                        )
-                        return@get
-                    }
-                    call.respond(prizes.map { it.toDto() })
+            get("/prizes") {
+                val prizes = getPrizeUseCase.invoke().filterNotNull()
+                if (prizes.isEmpty()) {
+                    call.respond(
+                        HttpStatusCode.NotFound,
+                        mapOf("error" to "Премии не найдены")
+                    )
+                    return@get
                 }
+                call.respond(prizes.map { it.toDto() })
+            }
+            authenticate("auth-jwt") {
                 get("/prizes/{year}/{category}") {
                     val year = call.parameters["year"] ?: return@get call.respond(HttpStatusCode.BadRequest)
                     val category = call.parameters["category"] ?: return@get call.respond(HttpStatusCode.BadRequest)
