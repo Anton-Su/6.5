@@ -27,6 +27,7 @@ data class LaureateDto(
     val id: String,
     val fullName: String,
     val motivation: String,
+    val portion: String,
     val portraitUrl: String?
 )
 
@@ -129,6 +130,7 @@ fun NobelPrize.toDto(): NobelPrizeDto = NobelPrizeDto(
 fun Laureate.toDto(): LaureateDto = LaureateDto(
     id = id,
     fullName = fullName,
+    portion = portion,
     motivation = motivation,
     portraitUrl = portraitUrl
 )
