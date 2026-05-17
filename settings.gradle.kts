@@ -1,4 +1,4 @@
-rootProject.name = "6.4"
+rootProject.name = "6.5"
 
 pluginManagement {
     repositories {
