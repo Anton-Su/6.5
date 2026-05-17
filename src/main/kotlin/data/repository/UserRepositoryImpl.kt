@@ -3,7 +3,6 @@ package data.repository
 import domain.model.User
 import domain.repository.UserRepository
 
-
 class UserRepositoryImpl : UserRepository {
     val users: List<User> = List(10) { index ->
         User(

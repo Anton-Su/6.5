@@ -6,10 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm
 import java.util.Date
 
 object JwtConfig {
-    private const val SECRET = "my-super-secret-key"
+    private const val SECRET = "a8fK2mP9xQ4vN7tY1wZ6rL3cHs8uJ5dE"
     private const val ISSUER = "ktor-app"
     private const val AUDIENCE = "mobile-app"
-    private const val VALIDITY = 7L * 24 * 60 * 60 * 1000 // 7
+    private const val VALIDITY = 30L * 60 * 1000 // 7
     val verifier: JWTVerifier = JWT
         .require(Algorithm.HMAC256(SECRET))
         .withAudience(AUDIENCE)

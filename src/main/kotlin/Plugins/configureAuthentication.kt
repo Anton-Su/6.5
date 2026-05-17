@@ -13,7 +13,7 @@ fun Application.configureAuthentication() {
         jwt("auth-jwt") {
             realm = "ktor-app"
             verifier(
-                JWT.require(Algorithm.HMAC256("my-super-secret-key"))
+                JWT.require(Algorithm.HMAC256("a8fK2mP9xQ4vN7tY1wZ6rL3cHs8uJ5dE"))
                     .withAudience("mobile-app")
                     .withIssuer("ktor-app")
                     .build()

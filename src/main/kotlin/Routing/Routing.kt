@@ -22,4 +22,5 @@ fun Application.configureRouting() {
     // prizeRoutes()
     }
     AppContainer.authController.configure(this)
+    AppContainer.prizeController.configure(this)
 }

@@ -24,7 +24,7 @@ class AuthController(
 ) {
     fun configure(application: Application) {
         application.routing {
-            post("/login", {
+            post("auth/login", {
                 tags = listOf("Authentication")
                 summary = "Авторизация пользователя"
                 description = "Принимает логин/пароль и возвращает JWT токен"
