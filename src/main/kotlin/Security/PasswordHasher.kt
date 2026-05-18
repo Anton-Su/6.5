@@ -8,6 +8,7 @@ object PasswordHasher {
     }
 
     fun verify(password: String, hash: String): Boolean {
+        println()
         return BCrypt.verifyer().verify(password.toCharArray(), hash).verified
     }
 }

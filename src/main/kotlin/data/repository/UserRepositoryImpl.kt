@@ -13,6 +13,7 @@ class UserRepositoryImpl(private val prizeRepository: PrizeRepository) : UserRep
             username = "user$index",
             gender = "M",
             age = "15",
+            passwordHash = "$2a$12$1OlxBWskdRZbrx0Gltq6fu6bPvFDv.0CP19uc5doF.AUyMrVIQmya",
             favoritePrizes = emptyList(),
         )
     }
