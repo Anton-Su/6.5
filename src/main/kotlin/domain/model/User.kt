@@ -9,7 +9,7 @@ data class User(
     val passwordHash: String,
     val username: String,
     val gender: String,
-    val age: String,
+    val age: Int,
     val favoritePrizes: List<NobelPrize>
 )
 

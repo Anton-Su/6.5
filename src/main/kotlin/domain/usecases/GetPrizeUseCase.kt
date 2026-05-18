@@ -7,13 +7,11 @@ import domain.repository.PrizeRepository
 class GetPrizeUseCase(
     private val prizeRepository: PrizeRepository
 ) {
-    suspend operator fun invoke(): List<NobelPrize?> {
-        return prizeRepository.getAll()
-    }
+    suspend operator fun invoke(): List<NobelPrize> = prizeRepository.getAll()
 
-    suspend fun getById(year: String, category: String): NobelPrize? {
-        return prizeRepository.findPrize(year, category)
-    }
+    suspend fun getById(year: Int, category: String): NobelPrize? =
+        prizeRepository.findPrize(year, category)
 
-
+    suspend fun getLaureates(year: Int, category: String): List<Laureate> =
+        prizeRepository.findLaureates(year, category)
 }

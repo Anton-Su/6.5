@@ -5,6 +5,7 @@ import Plugins.configureCallLogging
 import Plugins.configureStatusPages
 import Routing.configureRouting
 import com.example.Plugins.configureContentNegotiation
+import data.Database.DatabaseFactory
 import di.appModule
 import io.ktor.server.engine.*
 import io.ktor.server.application.*
@@ -17,6 +18,7 @@ fun main() {
 }
 
 fun Application.module() {
+    DatabaseFactory.init()
     appModule()
     configureContentNegotiation()
     configureCallLogging()

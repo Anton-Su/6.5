@@ -16,15 +16,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NobelPrizeDto(
-    val id: String,
-    val year: String,
+    val id: Int,
+    val year: Int,
     val category: String,
-    val laureates: List<LaureateDto>
+    val laureates: List<LaureateDto> = emptyList()
 )
 
 @Serializable
 data class LaureateDto(
-    val id: String,
+    val id: Int,
     val fullName: String,
     val motivation: String,
     val portion: String,
@@ -37,7 +37,7 @@ class PrizeController(
     fun configure(application: Application) {
         application.routing {
             get("/prizes") {
-                val prizes = getPrizeUseCase.invoke().filterNotNull()
+                val prizes = getPrizeUseCase.invoke()
                 if (prizes.isEmpty()) {
                     call.respond(
                         HttpStatusCode.NotFound,
@@ -45,24 +45,29 @@ class PrizeController(
                     )
                     return@get
                 }
-                call.respond(prizes.map { it.toDto() })
+                val prizesWithLaureates = prizes.map { prize ->
+                    val laureates = getPrizeUseCase.getLaureates(prize.year, prize.category)
+                    prize.toDto(laureates)
+                }
+                call.respond(prizesWithLaureates)
             }
             authenticate("auth-jwt") {
                 get("/prizes/{year}/{category}") {
-                    val year = call.parameters["year"] ?: return@get call.respond(HttpStatusCode.BadRequest)
+                    val year = call.parameters["year"]?.toIntOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
                     val category = call.parameters["category"] ?: return@get call.respond(HttpStatusCode.BadRequest)
                     val prize = getPrizeUseCase.getById(year, category)
                     if (prize == null) {
                         call.respond(HttpStatusCode.NotFound, mapOf("error" to "Премия не найдена"))
                         return@get
                     }
-                    call.respond(prize.toDto())
+                    val laureates = getPrizeUseCase.getLaureates(year, category)
+                    call.respond(prize.toDto(laureates))
                 }
                 get("/prizes/{year}/{category}/laureates") {
-                    val year = call.parameters["year"] ?: return@get call.respond(HttpStatusCode.BadRequest)
+                    val year = call.parameters["year"]?.toIntOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
                     val category = call.parameters["category"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-                    val laureates = getPrizeUseCase.getById(year, category)?.laureates
-                    if (laureates.isNullOrEmpty()) {
+                    val laureates = getPrizeUseCase.getLaureates(year, category)
+                    if (laureates.isEmpty()) {
                         call.respond(HttpStatusCode.NotFound, mapOf("error" to "Лауреаты не найдены"))
                         return@get
                     }
@@ -73,7 +78,7 @@ class PrizeController(
     }
 }
 
-fun NobelPrize.toDto(): NobelPrizeDto = NobelPrizeDto(
+fun NobelPrize.toDto(laureates: List<Laureate> = emptyList()): NobelPrizeDto = NobelPrizeDto(
     id = id,
     year = year,
     category = category,

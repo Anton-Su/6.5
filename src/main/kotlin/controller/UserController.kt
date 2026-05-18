@@ -18,7 +18,7 @@ data class UserDto(
     val id: Int,
     val username: String,
     val gender: String,
-    val age: String,
+    val age: Int,
     val favoritePrizes: List<NobelPrizeDto>
 )
 
@@ -68,7 +68,7 @@ class UserController(
                     val username = principal?.payload?.getClaim("username")?.asString()
                         ?: return@post call.respond(HttpStatusCode.Unauthorized)
 
-                    val prizeId = call.parameters["prizeId"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                    val prizeId = call.parameters["prizeId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest)
                     val user = getCurrentUserUseCase(username) ?: return@post call.respond(HttpStatusCode.NotFound, mapOf("error" to "Пользователь не найден"))
 
                     val ok = addFavoritePrizeUseCase(user.id, prizeId)
@@ -80,7 +80,7 @@ class UserController(
                     val username = principal?.payload?.getClaim("username")?.asString()
                         ?: return@delete call.respond(HttpStatusCode.Unauthorized)
 
-                    val prizeId = call.parameters["prizeId"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+                    val prizeId = call.parameters["prizeId"]?.toIntOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
                     val user = getCurrentUserUseCase(username) ?: return@delete call.respond(HttpStatusCode.NotFound, mapOf("error" to "Пользователь не найден"))
 
                     val ok = removeFavoritePrizeUseCase(user.id, prizeId)

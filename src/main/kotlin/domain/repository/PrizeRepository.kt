@@ -4,7 +4,7 @@ import domain.model.Laureate
 import domain.model.NobelPrize
 
 interface PrizeRepository {
-    fun getAll(): List<NobelPrize>
-    fun findPrize(year: String, category: String): NobelPrize?
-    fun findLaureates(year: String, category: String): List<Laureate>?
+    suspend fun getAll(): List<NobelPrize>
+    suspend fun findPrize(year: Int, category: String): NobelPrize?
+    suspend fun findLaureates(year: Int, category: String): List<Laureate>
 }
