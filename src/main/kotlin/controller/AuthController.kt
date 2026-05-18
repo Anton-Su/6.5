@@ -24,27 +24,7 @@ class AuthController(
 ) {
     fun configure(application: Application) {
         application.routing {
-            post("auth/login", {
-                tags = listOf("Authentication")
-                summary = "Авторизация пользователя"
-                description = "Принимает логин/пароль и возвращает JWT токен"
-
-                request {
-                    body<LoginRequest> {
-                        description = "Данные для входа"
-                    }
-                }
-
-                response {
-                    HttpStatusCode.OK to {
-                        description = "Успешный вход"
-                        body<LoginResponse>()
-                    }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Неверные учетные данные"
-                    }
-                }
-            }) {
+            post("auth/login") {
                 val request = call.receive<LoginRequest>()
                 val token = loginUseCase.login(request.username, request.password)
                 if (token != null) {

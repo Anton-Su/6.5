@@ -3,6 +3,7 @@ package controller
 import domain.usecases.AddFavoritePrizeUseCase
 import domain.usecases.GetCurrentUserUseCase
 import domain.usecases.GetUserFavoritesUseCase
+import domain.usecases.GetPrizeUseCase
 import domain.usecases.RemoveFavoritePrizeUseCase
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
@@ -26,7 +27,8 @@ class UserController(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getUserFavoritesUseCase: GetUserFavoritesUseCase,
     private val addFavoritePrizeUseCase: AddFavoritePrizeUseCase,
-    private val removeFavoritePrizeUseCase: RemoveFavoritePrizeUseCase
+    private val removeFavoritePrizeUseCase: RemoveFavoritePrizeUseCase,
+    private val getPrizeUseCase: GetPrizeUseCase
 ) {
     fun configure(application: Application) {
         application.routing {
@@ -43,12 +45,16 @@ class UserController(
                     }
 
                     val favorites = getUserFavoritesUseCase(user.id)
+                    val favoritesWithLaureates = favorites.map { prize ->
+                        val laureates = getPrizeUseCase.getLaureates(prize.year, prize.category)
+                        prize.toDto(laureates)
+                    }
                     call.respond(UserDto(
                         id = user.id,
                         username = user.username,
                         gender = user.gender,
                         age = user.age,
-                        favoritePrizes = favorites.map { it.toDto() }
+                        favoritePrizes = favoritesWithLaureates
                     ))
                 }
 
@@ -59,8 +65,12 @@ class UserController(
 
                     val user = getCurrentUserUseCase(username) ?: return@get call.respond(HttpStatusCode.NotFound, mapOf("error" to "Пользователь не найден"))
                     val favorites = getUserFavoritesUseCase(user.id)
-
-                    call.respond(favorites.map { it.toDto() })
+                    val favoritesWithLaureates = favorites.map { prize ->
+                        val laureates = getPrizeUseCase.getLaureates(prize.year, prize.category)
+                        prize.toDto(laureates)
+                    }
+                    print(favoritesWithLaureates)
+                    call.respond(favoritesWithLaureates)
                 }
 
                 post("/users/me/prizes/{prizeId}") {

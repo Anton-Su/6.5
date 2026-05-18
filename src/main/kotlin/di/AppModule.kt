@@ -6,6 +6,7 @@ import data.repository.UserRepositoryImpl
 import domain.repository.UserRepository
 import controller.AuthController
 import controller.PrizeController
+import controller.UserController
 import data.repository.PrizeRepositoryImpl
 import domain.repository.PrizeRepository
 import domain.usecases.AddFavoritePrizeUseCase
@@ -27,7 +28,7 @@ object AppContainer {
     val removeFavoritePrizeUseCase: RemoveFavoritePrizeUseCase by lazy { RemoveFavoritePrizeUseCase(userRepository) }
     val authController: AuthController by lazy { AuthController(loginUseCase) }
     val prizeController: PrizeController by lazy { PrizeController(getPrizeUseCase) }
-    val userController: controller.UserController by lazy { controller.UserController(getCurrentUserUseCase, getUserFavoritesUseCase, addFavoritePrizeUseCase, removeFavoritePrizeUseCase) }
+    val userController: UserController by lazy { controller.UserController(getCurrentUserUseCase, getUserFavoritesUseCase, addFavoritePrizeUseCase, removeFavoritePrizeUseCase, getPrizeUseCase) }
 }
 
 fun appModule() {

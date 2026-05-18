@@ -3,6 +3,7 @@ package com.example
 import Plugins.configureAuthentication
 import Plugins.configureCallLogging
 import Plugins.configureStatusPages
+import Plugins.configureOpenApi
 import Routing.configureRouting
 import com.example.Plugins.configureContentNegotiation
 import data.Database.DatabaseFactory
@@ -24,5 +25,6 @@ fun Application.module() {
     configureCallLogging()
     configureStatusPages()
     configureAuthentication()
+    configureOpenApi()
     configureRouting()
 }
