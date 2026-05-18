@@ -18,7 +18,7 @@ class LoginUseCase(
         val passwordHash = "1111"
         // val passwordHash = getPasswordHashByUsername(username) ?: return null
         // if (!passwordHasher.verify(password, passwordHash)) return null
-        return JwtConfig.generateToken(user.username, user.role)
+        return JwtConfig.generateToken(user.username)
 
 
     }

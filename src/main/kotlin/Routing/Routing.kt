@@ -23,4 +23,5 @@ fun Application.configureRouting() {
     }
     AppContainer.authController.configure(this)
     AppContainer.prizeController.configure(this)
+    AppContainer.userController.configure(this)
 }
